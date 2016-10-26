@@ -1,6 +1,7 @@
 const WIDTH = 1280;
 const HEIGHT = 800;
 const MARGIN = 30;
+const RADIUS = 1;
 
 var genrateData = function() {
 	var result = [];
@@ -51,24 +52,33 @@ var loadChart = function(){
 
 var updateChart = function(){
 	d3.select('.randomNumbers').remove()
-	
+
 	var svg = d3.select('svg');
+
 	var g = svg.append('g')
-	.classed('randomNumbers', true)
-	.attr('transform', 'translate('+MARGIN+', '+MARGIN+')');
+		.classed('randomNumbers', true)
+		.attr('transform', 'translate('+MARGIN+', '+MARGIN+')');
 	
 	updateData(data);
 
 	g.selectAll('circle').data(data)
 		.enter().append('circle')
-		.attr('r', 5)
-		.attr("cx", function(d, index) {return xScale(index+1);})
+		.attr('r', RADIUS)
+		.attr("cx", function(d, index) {return xScale(index+1)})
 		.attr("cy", function(d) {return yScale(d)})
+
+	var line = d3.line()
+      	.x(function(d, index) {return xScale(index+1)})
+      	.y(function(d) {return yScale(d)})
+
+	 d3.select(".randomNumbers").append("path")
+      .attr("d", line(data))
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", "2")
+      .attr("fill", "none");
 }
-
-
 
 window.onload = function() {
 	loadChart();
-	setInterval(updateChart, 1000);
+	setInterval(updateChart, 500);
 }
