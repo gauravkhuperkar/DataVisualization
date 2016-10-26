@@ -1,40 +1,39 @@
-var parseQuote = function(quote){
-	quote['Date'] = new Date(quote['Date']);
-	quote['Close Price'] = +quote['Close Price'];
-	return quote;
-}
-
 const WIDTH = 1280;
 const HEIGHT = 800;
 const MARGIN = 30;
 
-var loadChart = function(quotes){
-	var svg = d3.select('.container').append('svg')
-		.attr('width', WIDTH)
-		.attr('height', HEIGHT);
-	var dateRange = d3.extent(quotes, function(quote){
-	    return quote['Date'];
-	});
+var genrateData = function() {
+	var result = [];
+	for (var i = 0; i < 10; i++) {
+		result.push(Math.floor(Math.random()*100));		
+	}
+	return result;
+}
 
-	var priceRange = d3.extent(quotes, function(quote){
-    	return quote['Close Price'];
-    });
+var updateData = function(data) {
+	data.shift();
+	data.push(Math.floor(Math.random()*100));
+};
 
-    priceRange[0] -= 5;
-    priceRange[1] += 5;
-    dateRange = [new Date(dateRange[0]), new Date(dateRange[1])]
-    dateRange[0].setDate(dateRange[0].getDate() - 5);
-    dateRange[1].setDate(dateRange[1].getDate() + 5);
+var data = genrateData();
 
-	var xScale = d3.scaleTime()
-	    .domain(dateRange)
+var xScale = d3.scaleLinear()
+	    .domain([0,10])
 	    .range([0, WIDTH - (2 * MARGIN)]);
 
-	var yScale = d3.scaleLinear()
-	    .domain(priceRange)
-	    .range([HEIGHT - (2 * MARGIN), 0]);
+var yScale = d3.scaleLinear()
+    .domain([0,100])
+    .range([HEIGHT - (2 * MARGIN), 0]);
 
-	var xAxis = d3.axisBottom(xScale).ticks(12);
+
+var loadChart = function(){
+
+	var svg = d3.select('.chart').append('svg')
+		.attr('width', WIDTH)
+		.attr('height', HEIGHT);
+	
+
+	var xAxis = d3.axisBottom(xScale).ticks(10);
 	var yAxis = d3.axisLeft(yScale).ticks(10);
 
 	svg.append('g')
@@ -46,23 +45,30 @@ var loadChart = function(quotes){
 		.call(yAxis);
 
 	var g = svg.append('g')
+		.classed('randomNumbers', true)
 		.attr('transform', 'translate('+MARGIN+', '+MARGIN+')');
-
-	g.selectAll('circle').data(quotes)
-		.enter().append('circle')
-		.attr('r', 5).append('title')
-		.text(function(q){
-			return 'Date: ' + q['Date'].toISOString().split('T')[0] + '\nPrice: ' + q['Close Price'];
-		})
-	
-	var circles = g.selectAll('circle');
-	
-	circles.attr('cx', function(q){return xScale(q['Date'])})
-		.attr('cy', function(q){return yScale(q['Close Price'])});
-
-	g.selectAll('circle').exit().remove();
-
 }
 
-d3.csv('../data/tataSteel.csv', parseQuote, loadChart);
+var updateChart = function(){
+	d3.select('.randomNumbers').remove()
+	
+	var svg = d3.select('svg');
+	var g = svg.append('g')
+	.classed('randomNumbers', true)
+	.attr('transform', 'translate('+MARGIN+', '+MARGIN+')');
+	
+	updateData(data);
 
+	g.selectAll('circle').data(data)
+		.enter().append('circle')
+		.attr('r', 5)
+		.attr("cx", function(d, index) {return xScale(index+1);})
+		.attr("cy", function(d) {return yScale(d)})
+}
+
+
+
+window.onload = function() {
+	loadChart();
+	setInterval(updateChart, 1000);
+}
