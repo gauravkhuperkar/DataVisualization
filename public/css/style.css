@@ -13,3 +13,12 @@ circle{
 h1 {
 	color: darkgray;
 }
+
+#roundButton {
+	background: #eeeeee;
+	color: #666666;
+	width: 200px;
+	margin-bottom: 20px;
+	padding: 5px;
+	border-radius: 10px;
+}
