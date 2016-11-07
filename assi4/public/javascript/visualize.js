@@ -1,4 +1,4 @@
-var header = ["Title", "n = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"];
+var header = ["Title", "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"];
 
 var getData = function() {
 	var numbers = [1,2,3,4,5,6,7,8,9,10];
@@ -15,9 +15,10 @@ var getData = function() {
 	});
 
 	var data = []
-	data.push(["n square",squares.join(" ")]);
-	data.push(["log(n)",logs.join(" ")]);
-	data.push(["log(n) rounded",roundOfLogs.join(" ")]);
+	data.push(["n",numbers.join(", ")]);
+	data.push(["n square",squares.join(", ")]);
+	data.push(["log(n)",logs.join(", ")]);
+	data.push(["log(n) rounded",roundOfLogs.join(", ")]);
 
 	return data;
 };

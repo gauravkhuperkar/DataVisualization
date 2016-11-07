@@ -1,0 +1,8 @@
+.numbers {
+	display: inline-block;
+	border: solid 1px lightgrey;
+	vertical-align: top;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-left: 10px; 
+}
