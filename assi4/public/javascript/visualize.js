@@ -1,7 +1,7 @@
-var numbers = [1,2,3,4,5,6,7,8,9,10];
 var header = ["Title", "n = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"];
 
 var getData = function() {
+	var numbers = [1,2,3,4,5,6,7,8,9,10];
 	var squares = numbers.map(function(each) {
 		return each*each
 	});
@@ -22,14 +22,16 @@ var getData = function() {
 	return data;
 };
 
-var makeTableRow = function(data, row) {
+var makeTableRow = function(data, row, attribute) {
 	for (var i = 0; i < data.length; i++) {
 		row.append("tr")
-			.selectAll("th")
+			.selectAll(attribute)
 			.data(data[i])
 			.enter()
-			.append("th")
+			.append(attribute)
 			.text(function(d){return d})
+            .style("border", "1px black solid")
+            
 	};
 };
 
@@ -39,10 +41,10 @@ var loadTable = function() {
 	var tableBody = table.append("tbody");
 
 	// for table head
-	makeTableRow([header],tableHead)
+	makeTableRow([header],tableHead, "th")
 
 	// for table body
-	makeTableRow(getData(), tableBody);
+	makeTableRow(getData(), tableBody, "td");
 };
 
 window.onload = loadTable
