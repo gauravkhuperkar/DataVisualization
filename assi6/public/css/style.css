@@ -1,0 +1,38 @@
+.container {
+	width: 600px;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.svg {
+	overflow: visible;
+}
+
+.line {
+	stroke: #555555;
+}
+
+.circle {
+	fill: none;
+	stroke: red;
+	cx:200px;
+	cy:50px;
+	r:50px;
+}
+
+.square {
+	fill: none;
+	stroke: blue;
+	border-radius: 20px;
+	x: 300px;
+    y: 0px;
+	rx: 5px;
+	ry: 5px;
+    width: 100px;
+    height: 100px;
+}
+
+.triangle {
+	fill: none;
+	stroke: green;
+}
