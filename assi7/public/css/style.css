@@ -3,6 +3,11 @@
 	fill: none;
 }
 
+.sinValuesLine {
+	stroke: steelblue;
+	fill: none;
+}
+
 .circles {
 	fill: white;
 	stroke: steelblue;
