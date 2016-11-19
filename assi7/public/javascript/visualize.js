@@ -42,8 +42,8 @@ var getNumberLine = function(yFunction, curveProperty) {
 		.y(yFunction);
 }
 
-var loadChart = function() {
-	var WIDTH = 700 ,HEIGHT = 600;
+var loadChart = function(property) {
+	var WIDTH = 700 ,HEIGHT = 600, MARGIN = 30;
 	var data = [{x:0, y:5},{x:1, y:9},{x:2, y:7},{x:3, y:5},{x:4, y:3},{x:6, y:4},{x:7, y:2},{x:8, y:3},{x:9, y:2}];
 	
 	var svg = d3.select('.continer').append('svg')
@@ -53,19 +53,24 @@ var loadChart = function() {
 	var xAxis = d3.axisBottom(xScale).ticks(10);
 	var yAxis = d3.axisLeft(yScale).ticks(10);
 
-	appendGroupAndTranslateBy(30,HEIGHT+60,svg).call(xAxis);
-	appendGroupAndTranslateBy(30,60,svg).call(yAxis);
+	appendGroupAndTranslateBy(MARGIN,HEIGHT+MARGIN,svg).call(xAxis);
+	appendGroupAndTranslateBy(MARGIN,MARGIN,svg).call(yAxis);
 
-	var chartGroup = appendGroupAndTranslateBy(30,60,svg);
+	var chartGroup = appendGroupAndTranslateBy(MARGIN,MARGIN,svg);
 
-	var numberLine = getNumberLine(function(d) {return yScale(d.y)}, d3.curveLinear)
-	var sinValuesLine = getNumberLine(getSineValues, d3.curveLinear)
+	var numberLine = getNumberLine(function(d) {return yScale(d.y)}, property)
+	var sinValuesLine = getNumberLine(getSineValues, property)
 
 	appendPath(chartGroup, numberLine, data, "numberLine");
 	appendPath(chartGroup, sinValuesLine, data, "sinValuesLine");
 
-	appendCircles(svg, data, getSineValues).attr('transform', translate(30, 60));
+	appendCircles(svg, data, getSineValues).attr('transform', translate(MARGIN, MARGIN));
 	appendCircles(chartGroup, data, function(d){return yScale(d.y)});
 };
 
-window.onload = loadChart;
+window.onload = function(){	
+	var properties = [d3.curveLinear, d3.curveStep, d3.curveStepBefore, d3.curveStepAfter,
+					d3.curveBasis, d3.curveCardinal, d3.curveMonotoneX,d3.curveCatmullRom ];
+
+	properties.forEach(function(each){ loadChart(each);});
+};
