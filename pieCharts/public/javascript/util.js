@@ -1,6 +1,5 @@
 var util = {}
 util.appendSvg = function() {
-	console.log("......................")
 	return d3.select('.continer').append('svg')
 		    .attr("width", 800)
 		    .attr("height", 600)
@@ -8,11 +7,12 @@ util.appendSvg = function() {
 		    .attr('transform', 'translate(' + 400 + ',' + 300 + ')');
 }
 
-util.appendArc = function() {
+util.appendArc = function(inner_Radius) {
 	return d3.arc()
 	    	.outerRadius(300)
-	    	.innerRadius(0);
+	    	.innerRadius(inner_Radius);
 }
+
 util.appendPie = function() {
 	return d3.pie()
         	.value(function(d) { return d;})
