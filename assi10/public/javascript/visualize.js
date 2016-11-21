@@ -7,8 +7,8 @@ var getSineValues = function(d) {
 	return (Math.sin(3*d)+1)/2;
 }
 
-var loadChart = function() {
-	var WIDTH = 700 ,HEIGHT = 600, MARGIN = 30;
+var loadChart = function(curveProperty) {
+	var WIDTH = 800 ,HEIGHT = 600, MARGIN = 30;
 	var data = [0,1,2,3,4,5,6,7,8,9];
 
 	var xScale = d3.scaleLinear()
@@ -36,6 +36,7 @@ var loadChart = function() {
 	var chartGroup = appendGroupAndTranslateBy(MARGIN,MARGIN,svg);
 
 	var numberLine = d3.line()
+					.curve(curveProperty)
 					.x(function(d) {return xScale(d)})
 					.y(function(d) {return yScale(getSineValues(d))})
 
@@ -55,4 +56,8 @@ var loadChart = function() {
 		.attr('r', 5)
 };
 
-window.onload = loadChart
+window.onload = function(){	
+	var properties = [d3.curveCardinal, d3.curveMonotoneX, d3.curveCatmullRom, d3.curveLinear];
+
+	properties.forEach(function(each){ loadChart(each);});
+};
