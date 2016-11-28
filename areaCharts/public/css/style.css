@@ -1,0 +1,13 @@
+.area {
+	fill: #cae0f0;
+}
+
+.numberLine {
+	stroke:steelblue;
+	fill: none;
+}
+
+.circles {
+	fill: white;
+	stroke: steelblue;
+}
