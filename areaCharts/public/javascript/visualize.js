@@ -7,35 +7,36 @@ var getSineValues = function(d) {
 	return (3*Math.sin(d))+5;
 }
 
-var generateLine = function() {
+var generateLine = function(property) {
 	return d3.line()
-		.curve(d3.curveLinear)
+		.curve(property)
 		.x(function(d) {return xScale()(d)})
 		.y(function(d) {return yScale()(getSineValues(d))})
 }
 
-var generateArea = function(height) {
+var generateArea = function(height, property) {
 	return d3.area()
 		.x(function(d) {return xScale()(d)})
 		.y0(function(d) {return yScale()(getSineValues(d))})
 		.y1(height)
+		.curve(property)
 }
 
-var appendPathWithArea = function(data, group, height) {
+var appendPathWithArea = function(data, group, height, area) {
 	return group.append("path")
 		.datum(data)
 		.classed("area", true)
-		.attr("d", generateArea(height))
+		.attr("d",area)
 }
 
-var appendPathWithLine = function(data, group) {
+var appendPathWithLine = function(data, group, line) {
 	return group.append("path")
 		.datum(data)
 		.classed("numberLine", true)
-		.attr("d", generateLine())
+		.attr("d", line)
 }
 
-var area = function(data, group) {
+var appendCircles = function(data, group) {
 	return group.selectAll('circle').data(data)
 		.enter()
 		.append('circle')
@@ -65,26 +66,31 @@ var appendSvg = function(width,height) {
 
 // load chart ----------------------------------------------------------------------------------------------------
 
-var loadChart = function() {
-	var WIDTH = 800 ,HEIGHT = 600, MARGIN = 30;
+var loadChart = function(property) {
+	var WIDTH = 800 ,HEIGHT = 600, MARGIN = 40;
 	var data = [0,1,2,3,4,5,6,7,8,9,10];
 	var svg = appendSvg(WIDTH,HEIGHT);
 	var xAxis = d3.axisBottom(xScale()).ticks(10);
 	var yAxis = d3.axisLeft(yScale()).ticks(10);  
+	var group = appendGroupAndTranslateBy(MARGIN+1,MARGIN,svg);
+	var area = generateArea(HEIGHT, property);
+	var line = generateLine(property);
 
+	appendPathWithArea(data, group, HEIGHT, area);
+	appendPathWithLine(data, group, line);
+	appendCircles(data, group);
+	
 	appendGroupAndTranslateBy(MARGIN,HEIGHT+MARGIN,svg).call(xAxis);
 	appendGroupAndTranslateBy(MARGIN,MARGIN,svg).call(yAxis);
-
-	var group = appendGroupAndTranslateBy(MARGIN+1,MARGIN,svg);
-	generateLine();
-	generateArea();
-
-	appendPathWithArea(data, group, HEIGHT);
-	appendPathWithLine(data, group);
-	area(data, group);
 };
 
 //-----------------------------------------------------------------------------------------------------------------
 
-window.onload = loadChart
+window.onload = function() {
+	var properties = [	d3.curveLinear, d3.curveLinearClosed, 
+						d3.curveStepAfter, d3.curveBasisOpen,
+						d3.curveCardinalClosed, d3.curveBasis,
+					];
 
+	properties.forEach(function(each){ loadChart(each);});
+}
