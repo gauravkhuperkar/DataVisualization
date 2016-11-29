@@ -5,6 +5,7 @@
 .numberLine {
 	stroke:steelblue;
 	fill: none;
+	stroke-width: 3;
 }
 
 .circles {
