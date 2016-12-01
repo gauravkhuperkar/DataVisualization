@@ -1,0 +1,19 @@
+.container {
+	margin: 0 auto;
+	width: 400px;
+	height: 600px;
+	font-size: 25px;
+    font-family: sans-serif;
+    color: #454545;
+}
+
+h1 {
+	margin: 0 auto;
+	width: 635px;
+	font-size: 30px;
+    font-family: sans-serif;
+    color: white;
+    background-color: #444444;
+    padding: 10px;
+    border-radius: 8px
+}
